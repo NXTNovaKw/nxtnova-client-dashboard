@@ -7,6 +7,11 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import ContentBlocks from './collections/ContentBlocks'
+import Orders from './collections/Orders'
+import Customers from './collections/Customers'
+import Products from './collections/Products'
+import Categories from './collections/Categories'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 
@@ -20,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Categories, Products, Customers, Orders, ContentBlocks],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
