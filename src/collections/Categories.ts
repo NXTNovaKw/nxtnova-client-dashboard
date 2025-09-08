@@ -1,7 +1,5 @@
 import { CollectionConfig } from 'payload'
 
-
-
 const Categories: CollectionConfig = {
   slug: 'categories',
   admin: {
@@ -15,7 +13,6 @@ const Categories: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    // A slug is a URL-friendly version of the title
     {
       name: 'slug',
       label: 'Slug',
