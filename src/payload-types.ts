@@ -181,7 +181,7 @@ export interface Category {
   createdAt: string;
 }
 /**
- * The central collection for all DRIP products and their variants.
+ * DRIP products synced with Shopify.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "products".
@@ -190,9 +190,9 @@ export interface Product {
   id: number;
   title: string;
   /**
-   * The ID from the URL of the product in your Shopify admin.
+   * Auto-generated from Title.
    */
-  shopifyProductID: string;
+  slug: string;
   description?: {
     root: {
       type: string;
@@ -208,15 +208,51 @@ export interface Product {
     };
     [k: string]: unknown;
   } | null;
-  category: number | Category;
+  productImages?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Set prices and compare-at prices per variant below.
+   */
   variants: {
-    size: 'S' | 'M' | 'L' | 'XL' | 'XXL';
-    color: string;
-    price: number;
+    size?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
+    color?: string | null;
     sku?: string | null;
+    barcode?: string | null;
+    price: number;
+    compareAtPrice?: number | null;
+    taxable?: boolean | null;
+    trackQuantity?: boolean | null;
     stockQty: number;
+    continueSelling?: boolean | null;
+    requiresShipping?: boolean | null;
+    weight?: number | null;
+    weightUnit?: ('g' | 'kg' | 'oz' | 'lb') | null;
     id?: string | null;
   }[];
+  /**
+   * Publishing to specific sales channels is handled in Shopify. Set Status here; Vendor, Type, Tags, and Collections sync on save.
+   */
+  shopify?: {
+    status?: ('active' | 'draft' | 'archived') | null;
+    vendor?: string | null;
+    productType?: string | null;
+    tags?: string[] | null;
+    collectionIds?: string[] | null;
+    productTaxonomyNodeId?: string | null;
+  };
+  /**
+   * Synced automatically after create.
+   */
+  shopifyProductID?: string | null;
+  category?: (number | null) | Category;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -440,18 +476,49 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface ProductsSelect<T extends boolean = true> {
   title?: T;
-  shopifyProductID?: T;
+  slug?: T;
   description?: T;
-  category?: T;
+  productImages?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   variants?:
     | T
     | {
         size?: T;
         color?: T;
-        price?: T;
         sku?: T;
+        barcode?: T;
+        price?: T;
+        compareAtPrice?: T;
+        taxable?: T;
+        trackQuantity?: T;
         stockQty?: T;
+        continueSelling?: T;
+        requiresShipping?: T;
+        weight?: T;
+        weightUnit?: T;
         id?: T;
+      };
+  shopify?:
+    | T
+    | {
+        status?: T;
+        vendor?: T;
+        productType?: T;
+        tags?: T;
+        collectionIds?: T;
+        productTaxonomyNodeId?: T;
+      };
+  shopifyProductID?: T;
+  category?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
       };
   updatedAt?: T;
   createdAt?: T;
