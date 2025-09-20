@@ -215,9 +215,10 @@ export interface Product {
   variants: {
     size?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
     color?: string | null;
-    price: number;
     sku?: string | null;
+    price: number;
     stockQty: number;
+    trackQuantity?: boolean | null;
     id?: string | null;
   }[];
   updatedAt: string;
@@ -459,9 +460,10 @@ export interface ProductsSelect<T extends boolean = true> {
     | {
         size?: T;
         color?: T;
-        price?: T;
         sku?: T;
+        price?: T;
         stockQty?: T;
+        trackQuantity?: T;
         id?: T;
       };
   updatedAt?: T;
